@@ -1,5 +1,5 @@
 # No subir claves ni configuración local sensible
-js/config.js
+# js/config.js — incluido intencionalmente (solo clave pública anon)
 .env
 .env.local
 node_modules/
