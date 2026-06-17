@@ -3,179 +3,155 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CardControl — Gestión de Tarjetas de Crédito</title>
+  <title>CardControl — Gestiona tus tarjetas de crédito con inteligencia</title>
+  <meta name="description" content="Controla tus fechas de corte y pago, evita intereses y construye un excelente historial crediticio. Gratis.">
   <link rel="stylesheet" href="css/style.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="css/landing.css">
 </head>
-<body>
+<body class="landing-body">
 
-<div class="auth-page">
-  <div class="auth-box">
-    <div class="auth-logo">
-      <div class="logo-icon">💳</div>
-      <h1>CardControl</h1>
-      <p>Gestiona tus tarjetas de crédito con inteligencia</p>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">💳 <span>CardControl</span></div>
+    <div class="nav-links">
+      <a href="#features">Funciones</a>
+      <a href="#how">Cómo funciona</a>
+      <a href="login.html" class="btn-nav">Iniciar sesión</a>
+      <a href="login.html?tab=register" class="btn-nav btn-nav-primary">Crear cuenta gratis</a>
     </div>
-
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchTab('login')">Iniciar sesión</button>
-      <button class="auth-tab" onclick="switchTab('register')">Crear cuenta</button>
-    </div>
-
-    <div id="auth-error" class="auth-error"></div>
-
-    <!-- LOGIN -->
-    <form id="form-login" onsubmit="doLogin(event)">
-      <div class="form-group">
-        <label>Correo electrónico</label>
-        <input type="email" id="l-email" placeholder="correo@ejemplo.com" required autocomplete="email">
-      </div>
-      <div class="form-group">
-        <label>Contraseña</label>
-        <input type="password" id="l-password" placeholder="Tu contraseña" required autocomplete="current-password">
-      </div>
-      <button type="submit" class="btn btn-primary btn-full" id="btn-login">
-        Iniciar sesión
-      </button>
-      <p style="text-align:center;font-size:13px;color:#6b7280;margin-top:12px">
-        <a href="#" onclick="showForgot(event)" style="color:#2563eb">¿Olvidaste tu contraseña?</a>
-      </p>
-    </form>
-
-    <!-- REGISTER -->
-    <form id="form-register" onsubmit="doRegister(event)" style="display:none">
-      <div class="form-group">
-        <label>Nombre completo</label>
-        <input type="text" id="r-name" placeholder="Tu nombre" required>
-      </div>
-      <div class="form-group">
-        <label>Correo electrónico</label>
-        <input type="email" id="r-email" placeholder="correo@ejemplo.com" required autocomplete="email">
-      </div>
-      <div class="form-group">
-        <label>Contraseña (mínimo 6 caracteres)</label>
-        <input type="password" id="r-password" placeholder="Crea una contraseña" required minlength="6" autocomplete="new-password">
-      </div>
-      <button type="submit" class="btn btn-primary btn-full" id="btn-register">
-        Crear cuenta gratis
-      </button>
-      <p style="text-align:center;font-size:12px;color:#9ca3af;margin-top:12px">
-        Al registrarte aceptas que tus datos se almacenan de forma segura.
-      </p>
-    </form>
-
-    <!-- FORGOT -->
-    <form id="form-forgot" onsubmit="doForgot(event)" style="display:none">
-      <p style="font-size:13px;color:#6b7280;margin-bottom:14px">
-        Te enviaremos un enlace para restablecer tu contraseña.
-      </p>
-      <div class="form-group">
-        <label>Correo electrónico</label>
-        <input type="email" id="f-email" placeholder="correo@ejemplo.com" required>
-      </div>
-      <button type="submit" class="btn btn-primary btn-full">Enviar enlace</button>
-      <p style="text-align:center;font-size:13px;color:#6b7280;margin-top:12px">
-        <a href="#" onclick="switchTab('login')" style="color:#2563eb">Volver al inicio de sesión</a>
-      </p>
-    </form>
   </div>
-</div>
+</nav>
 
-<script src="js/config.js"></script>
-<script>
-  db.auth.getSession().then(({ data: { session } }) => {
-    if (session) window.location.href = 'app.html';
-  });
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">✨ 100% gratuito · Sin tarjeta de crédito requerida</div>
+    <h1 class="hero-title">Nunca más olvides<br>una fecha de pago</h1>
+    <p class="hero-sub">CardControl te recuerda cuándo corta y cuándo pagar cada tarjeta, calcula tus intereses y te dice exactamente en qué orden pagar para ahorrar más dinero.</p>
+    <div class="hero-actions">
+      <a href="login.html?tab=register" class="btn-hero-primary">Comenzar gratis →</a>
+      <a href="#how" class="btn-hero-ghost">Ver cómo funciona</a>
+    </div>
+    <p class="hero-note">Ya lo usan personas como tú para mejorar su salud financiera 🇸🇻</p>
+  </div>
+</section>
 
-  function switchTab(tab) {
-    document.getElementById('form-login').style.display = tab === 'login' ? '' : 'none';
-    document.getElementById('form-register').style.display = tab === 'register' ? '' : 'none';
-    document.getElementById('form-forgot').style.display = 'none';
-    document.querySelectorAll('.auth-tab').forEach((t, i) => {
-      t.classList.toggle('active', (tab === 'login' && i === 0) || (tab === 'register' && i === 1));
-    });
-    clearError();
-  }
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-inner">
+    <div class="section-label">Funciones</div>
+    <h2 class="section-title">Todo lo que necesitas para<br>controlar tu crédito</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Alertas de fechas</h3>
+        <p>Te avisa 3 días antes de tu fecha de corte y un día antes del vencimiento para que nunca pagues tarde.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💳</div>
+        <h3>Múltiples tarjetas</h3>
+        <p>Agrega todas tus tarjetas. Cada una con su propio ciclo de corte, límite, saldo y tasa de interés.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Dashboard financiero</h3>
+        <p>Ve de un vistazo tu deuda total, pago mínimo del mes, interés estimado y cuánto has pagado.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Estrategia de pago</h3>
+        <p>El método avalancha te dice en qué orden pagar tus tarjetas para reducir el costo total de tu deuda.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🕓</div>
+        <h3>Historial de pagos</h3>
+        <p>Registra cada pago con fecha y tipo. Lleva un control claro de lo que has pagado cada mes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💡</div>
+        <h3>Consejos financieros</h3>
+        <p>Tips prácticos basados en tus datos reales para mejorar tu score crediticio y ahorrar en intereses.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-  function showForgot(e) {
-    e.preventDefault();
-    document.getElementById('form-login').style.display = 'none';
-    document.getElementById('form-register').style.display = 'none';
-    document.getElementById('form-forgot').style.display = '';
-    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-  }
-
-  function showError(msg) {
-    const el = document.getElementById('auth-error');
-    el.textContent = msg;
-    el.style.display = 'block';
-  }
-
-  function clearError() {
-    const el = document.getElementById('auth-error');
-    el.style.display = 'none';
-  }
-
-  async function doLogin(e) {
-    e.preventDefault();
-    clearError();
-    const btn = document.getElementById('btn-login');
-    btn.disabled = true;
-    btn.textContent = 'Entrando...';
-    const { error } = await db.auth.signInWithPassword({
-      email: document.getElementById('l-email').value,
-      password: document.getElementById('l-password').value,
-    });
-    if (error) {
-      showError('Correo o contraseña incorrectos.');
-      btn.disabled = false;
-      btn.textContent = 'Iniciar sesión';
-    } else {
-      window.location.href = 'app.html';
-    }
-  }
-
-  async function doRegister(e) {
-    e.preventDefault();
-    clearError();
-    const btn = document.getElementById('btn-register');
-    btn.disabled = true;
-    btn.textContent = 'Creando cuenta...';
-    const { error } = await db.auth.signUp({
-      email: document.getElementById('r-email').value,
-      password: document.getElementById('r-password').value,
-      options: { data: { full_name: document.getElementById('r-name').value } }
-    });
-    if (error) {
-      showError(error.message);
-      btn.disabled = false;
-      btn.textContent = 'Crear cuenta gratis';
-    } else {
-      showError('');
-      document.getElementById('form-register').innerHTML = `
-        <div class="alert alert-success">
-          ✅ Cuenta creada. Revisa tu correo para confirmar tu cuenta, luego inicia sesión.
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="section-inner">
+    <div class="section-label">Cómo funciona</div>
+    <h2 class="section-title">Listo en 3 minutos</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Crea tu cuenta gratis</h3>
+          <p>Solo necesitas tu correo y una contraseña. Sin tarjeta de crédito, sin cobros ocultos.</p>
         </div>
-        <button class="btn btn-full" onclick="switchTab('login')">Ir al inicio de sesión</button>
-      `;
-    }
-  }
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Agrega tus tarjetas</h3>
+          <p>Ingresa el día de corte, día de pago, límite y saldo de cada tarjeta. Tarda menos de un minuto por tarjeta.</p>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Recibe alertas y paga a tiempo</h3>
+          <p>CardControl te recuerda cuándo actuar. Tú solo sigues el plan y construyes tu historial crediticio.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  async function doForgot(e) {
-    e.preventDefault();
-    const { error } = await db.auth.resetPasswordForEmail(
-      document.getElementById('f-email').value,
-      { redirectTo: window.location.origin + '/app.html' }
-    );
-    if (error) {
-      showError(error.message);
-    } else {
-      document.getElementById('form-forgot').innerHTML = `
-        <div class="alert alert-success">✅ Revisa tu correo. Te enviamos el enlace de recuperación.</div>
-        <button class="btn btn-full" onclick="switchTab('login')" style="margin-top:10px">Volver al inicio</button>
-      `;
-    }
-  }
-</script>
+<!-- STATS -->
+<section class="stats">
+  <div class="section-inner">
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-value">30%</div>
+        <div class="stat-label">de utilización ideal para un buen score</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$0</div>
+        <div class="stat-label">en intereses si pagas el total cada mes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">100%</div>
+        <div class="stat-label">gratis, siempre</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="section-inner" style="text-align:center">
+    <h2 style="font-size:32px;font-weight:700;margin-bottom:16px;color:#fff">¿Listo para tomar control?</h2>
+    <p style="font-size:17px;color:rgba(255,255,255,0.8);margin-bottom:32px">Crea tu cuenta gratis en menos de un minuto.</p>
+    <a href="login.html?tab=register" class="btn-cta">Comenzar gratis →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="section-inner">
+    <div class="footer-inner">
+      <div class="footer-logo">💳 CardControl</div>
+      <div class="footer-links">
+        <a href="login.html">Iniciar sesión</a>
+        <a href="login.html?tab=register">Crear cuenta</a>
+      </div>
+      <div class="footer-copy">© 2026 CardControl. Hecho con ❤️ en El Salvador.</div>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
