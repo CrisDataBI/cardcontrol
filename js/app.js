@@ -49,7 +49,7 @@ let currentView = 'dashboard';
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 (async function init() {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await db.auth.getSession();
   if (!session) { window.location.href = 'index.html'; return; }
 
   currentUser = session.user;
@@ -67,15 +67,15 @@ let currentView = 'dashboard';
 // ─── DATA ─────────────────────────────────────────────────────────────────────
 async function loadData() {
   const [{ data: c }, { data: p }] = await Promise.all([
-    supabase.from('cards').select('*').eq('user_id', currentUser.id).order('created_at'),
-    supabase.from('payments').select('*').eq('user_id', currentUser.id).order('date', { ascending: false }),
+    db.from('cards').select('*').eq('user_id', currentUser.id).order('created_at'),
+    db.from('payments').select('*').eq('user_id', currentUser.id).order('date', { ascending: false }),
   ]);
   cards = c || [];
   payments = p || [];
 }
 
 async function doLogout() {
-  await supabase.auth.signOut();
+  await db.auth.signOut();
   window.location.href = 'index.html';
 }
 
@@ -471,9 +471,9 @@ async function saveCard(e) {
   };
 
   if (id) {
-    await supabase.from('cards').update(payload).eq('id', id);
+    await db.from('cards').update(payload).eq('id', id);
   } else {
-    await supabase.from('cards').insert(payload);
+    await db.from('cards').insert(payload);
   }
 
   closeModal('modal-card');
@@ -485,8 +485,8 @@ async function saveCard(e) {
 async function deleteCard(id) {
   if (!confirm('¿Eliminar esta tarjeta y todos sus pagos registrados?')) return;
   await Promise.all([
-    supabase.from('cards').delete().eq('id', id),
-    supabase.from('payments').delete().eq('card_id', id),
+    db.from('cards').delete().eq('id', id),
+    db.from('payments').delete().eq('card_id', id),
   ]);
   await loadData();
   renderAlerts();
@@ -511,7 +511,7 @@ async function savePayment(e) {
   const amount = parseFloat(document.getElementById('fp-amount').value) || 0;
   const shouldUpdate = document.getElementById('fp-update').value === 'yes';
 
-  await supabase.from('payments').insert({
+  await db.from('payments').insert({
     user_id: currentUser.id,
     card_id: cardId,
     amount,
@@ -524,7 +524,7 @@ async function savePayment(e) {
     const card = cards.find(c => c.id === cardId);
     if (card) {
       const newBalance = Math.max(0, (card.balance || 0) - amount);
-      await supabase.from('cards').update({ balance: newBalance }).eq('id', cardId);
+      await db.from('cards').update({ balance: newBalance }).eq('id', cardId);
     }
   }
 
@@ -536,7 +536,7 @@ async function savePayment(e) {
 
 async function deletePayment(id) {
   if (!confirm('¿Eliminar este registro de pago?')) return;
-  await supabase.from('payments').delete().eq('id', id);
+  await db.from('payments').delete().eq('id', id);
   await loadData();
   renderView('history');
 }
@@ -570,7 +570,7 @@ async function importData(evt) {
 
       for (const card of data.cards) {
         const { id, ...rest } = card;
-        await supabase.from('cards').insert({ ...rest, user_id: currentUser.id });
+        await db.from('cards').insert({ ...rest, user_id: currentUser.id });
       }
       await loadData();
       renderAlerts();
