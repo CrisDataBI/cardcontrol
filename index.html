@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CardControl — Gestión de Tarjetas de Crédito</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="auth-page">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="logo-icon">💳</div>
+      <h1>CardControl</h1>
+      <p>Gestiona tus tarjetas de crédito con inteligencia</p>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchTab('login')">Iniciar sesión</button>
+      <button class="auth-tab" onclick="switchTab('register')">Crear cuenta</button>
+    </div>
+
+    <div id="auth-error" class="auth-error"></div>
+
+    <!-- LOGIN -->
+    <form id="form-login" onsubmit="doLogin(event)">
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" id="l-email" placeholder="correo@ejemplo.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="l-password" placeholder="Tu contraseña" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-full" id="btn-login">
+        Iniciar sesión
+      </button>
+      <p style="text-align:center;font-size:13px;color:#6b7280;margin-top:12px">
+        <a href="#" onclick="showForgot(event)" style="color:#2563eb">¿Olvidaste tu contraseña?</a>
+      </p>
+    </form>
+
+    <!-- REGISTER -->
+    <form id="form-register" onsubmit="doRegister(event)" style="display:none">
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" id="r-name" placeholder="Tu nombre" required>
+      </div>
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" id="r-email" placeholder="correo@ejemplo.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>Contraseña (mínimo 6 caracteres)</label>
+        <input type="password" id="r-password" placeholder="Crea una contraseña" required minlength="6" autocomplete="new-password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-full" id="btn-register">
+        Crear cuenta gratis
+      </button>
+      <p style="text-align:center;font-size:12px;color:#9ca3af;margin-top:12px">
+        Al registrarte aceptas que tus datos se almacenan de forma segura.
+      </p>
+    </form>
+
+    <!-- FORGOT -->
+    <form id="form-forgot" onsubmit="doForgot(event)" style="display:none">
+      <p style="font-size:13px;color:#6b7280;margin-bottom:14px">
+        Te enviaremos un enlace para restablecer tu contraseña.
+      </p>
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" id="f-email" placeholder="correo@ejemplo.com" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Enviar enlace</button>
+      <p style="text-align:center;font-size:13px;color:#6b7280;margin-top:12px">
+        <a href="#" onclick="switchTab('login')" style="color:#2563eb">Volver al inicio de sesión</a>
+      </p>
+    </form>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script>
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    if (session) window.location.href = 'app.html';
+  });
+
+  function switchTab(tab) {
+    document.getElementById('form-login').style.display = tab === 'login' ? '' : 'none';
+    document.getElementById('form-register').style.display = tab === 'register' ? '' : 'none';
+    document.getElementById('form-forgot').style.display = 'none';
+    document.querySelectorAll('.auth-tab').forEach((t, i) => {
+      t.classList.toggle('active', (tab === 'login' && i === 0) || (tab === 'register' && i === 1));
+    });
+    clearError();
+  }
+
+  function showForgot(e) {
+    e.preventDefault();
+    document.getElementById('form-login').style.display = 'none';
+    document.getElementById('form-register').style.display = 'none';
+    document.getElementById('form-forgot').style.display = '';
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('auth-error');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function clearError() {
+    const el = document.getElementById('auth-error');
+    el.style.display = 'none';
+  }
+
+  async function doLogin(e) {
+    e.preventDefault();
+    clearError();
+    const btn = document.getElementById('btn-login');
+    btn.disabled = true;
+    btn.textContent = 'Entrando...';
+    const { error } = await supabase.auth.signInWithPassword({
+      email: document.getElementById('l-email').value,
+      password: document.getElementById('l-password').value,
+    });
+    if (error) {
+      showError('Correo o contraseña incorrectos.');
+      btn.disabled = false;
+      btn.textContent = 'Iniciar sesión';
+    } else {
+      window.location.href = 'app.html';
+    }
+  }
+
+  async function doRegister(e) {
+    e.preventDefault();
+    clearError();
+    const btn = document.getElementById('btn-register');
+    btn.disabled = true;
+    btn.textContent = 'Creando cuenta...';
+    const { error } = await supabase.auth.signUp({
+      email: document.getElementById('r-email').value,
+      password: document.getElementById('r-password').value,
+      options: { data: { full_name: document.getElementById('r-name').value } }
+    });
+    if (error) {
+      showError(error.message);
+      btn.disabled = false;
+      btn.textContent = 'Crear cuenta gratis';
+    } else {
+      showError('');
+      document.getElementById('form-register').innerHTML = `
+        <div class="alert alert-success">
+          ✅ Cuenta creada. Revisa tu correo para confirmar tu cuenta, luego inicia sesión.
+        </div>
+        <button class="btn btn-full" onclick="switchTab('login')">Ir al inicio de sesión</button>
+      `;
+    }
+  }
+
+  async function doForgot(e) {
+    e.preventDefault();
+    const { error } = await supabase.auth.resetPasswordForEmail(
+      document.getElementById('f-email').value,
+      { redirectTo: window.location.origin + '/app.html' }
+    );
+    if (error) {
+      showError(error.message);
+    } else {
+      document.getElementById('form-forgot').innerHTML = `
+        <div class="alert alert-success">✅ Revisa tu correo. Te enviamos el enlace de recuperación.</div>
+        <button class="btn btn-full" onclick="switchTab('login')" style="margin-top:10px">Volver al inicio</button>
+      `;
+    }
+  }
+</script>
+</body>
+</html>

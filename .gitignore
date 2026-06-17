@@ -1,0 +1,7 @@
+# No subir claves ni configuración local sensible
+js/config.js
+.env
+.env.local
+node_modules/
+.DS_Store
+Thumbs.db

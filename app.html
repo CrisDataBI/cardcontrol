@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CardControl</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">💳</div>
+      <span>CardControl</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-label">Principal</div>
+      <button class="nav-item active" onclick="showView('dashboard', this)">
+        <span class="icon">📊</span> Dashboard
+      </button>
+      <button class="nav-item" onclick="showView('cards', this)">
+        <span class="icon">💳</span> Mis tarjetas
+      </button>
+      <button class="nav-item" onclick="showView('timeline', this)">
+        <span class="icon">📅</span> Calendario
+      </button>
+      <div class="nav-label">Finanzas</div>
+      <button class="nav-item" onclick="showView('history', this)">
+        <span class="icon">🕓</span> Historial de pagos
+      </button>
+      <button class="nav-item" onclick="showView('strategy', this)">
+        <span class="icon">🎯</span> Estrategia
+      </button>
+      <div class="nav-label">Info</div>
+      <button class="nav-item" onclick="showView('tips', this)">
+        <span class="icon">💡</span> Consejos
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="user-email" id="user-email">cargando...</div>
+      </div>
+      <button class="nav-item btn-ghost" onclick="doLogout()">
+        <span class="icon">🚪</span> Cerrar sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 id="page-title">Dashboard</h1>
+        <p id="page-sub">Hoy: <span id="today-label"></span></p>
+      </div>
+      <div class="flex gap-2 flex-wrap">
+        <button class="btn btn-sm" onclick="exportData()">⬇ Exportar</button>
+        <label class="btn btn-sm" style="cursor:pointer">
+          ⬆ Importar
+          <input type="file" accept=".json" style="display:none" onchange="importData(event)">
+        </label>
+        <button class="btn btn-primary" id="btn-add-card" onclick="openCardModal()">+ Nueva tarjeta</button>
+      </div>
+    </div>
+
+    <div class="page-body">
+      <div id="alerts-wrap"></div>
+      <div id="view-content">
+        <div class="page-loading"><div class="spinner"></div> Cargando...</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL TARJETA -->
+<div class="modal-overlay" id="modal-card">
+  <div class="modal">
+    <h2 id="modal-card-title">Nueva tarjeta</h2>
+    <form id="form-card" onsubmit="saveCard(event)">
+      <input type="hidden" id="fc-id">
+      <div class="section-title">Identificación</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre de la tarjeta *</label>
+          <input id="fc-name" type="text" placeholder="Visa Gold" required>
+        </div>
+        <div class="form-group">
+          <label>Banco emisor</label>
+          <input id="fc-bank" type="text" placeholder="Banco Agrícola">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Color</label>
+        <select id="fc-color">
+          <option value="blue">🔵 Azul</option>
+          <option value="teal">🟢 Verde</option>
+          <option value="purple">🟣 Morado</option>
+          <option value="coral">🟠 Coral</option>
+          <option value="amber">🟡 Ámbar</option>
+          <option value="pink">🩷 Rosa</option>
+        </select>
+      </div>
+      <div class="section-title">Fechas de facturación</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Día de corte (1–31) *</label>
+          <input id="fc-cut" type="number" min="1" max="31" required placeholder="Ej: 15">
+        </div>
+        <div class="form-group">
+          <label>Día de pago (1–31) *</label>
+          <input id="fc-pay" type="number" min="1" max="31" required placeholder="Ej: 5">
+        </div>
+      </div>
+      <div class="section-title">Montos</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Límite de crédito ($)</label>
+          <input id="fc-limit" type="number" min="0" step="0.01" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>Saldo actual ($)</label>
+          <input id="fc-balance" type="number" min="0" step="0.01" placeholder="0.00">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Pago mínimo ($)</label>
+          <input id="fc-min" type="number" min="0" step="0.01" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>Tasa de interés anual (%)</label>
+          <input id="fc-rate" type="number" min="0" step="0.01" placeholder="Ej: 36">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Notas (opcional)</label>
+        <textarea id="fc-notes" placeholder="Beneficios, observaciones..." style="resize:vertical;min-height:60px"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" onclick="closeModal('modal-card')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">✓ Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL PAGO -->
+<div class="modal-overlay" id="modal-payment">
+  <div class="modal">
+    <h2>Registrar pago</h2>
+    <form id="form-payment" onsubmit="savePayment(event)">
+      <input type="hidden" id="fp-cardid">
+      <div class="form-group">
+        <label>Tarjeta</label>
+        <input id="fp-cardname" type="text" readonly style="color:var(--text-muted);background:var(--bg)">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Monto pagado ($) *</label>
+          <input id="fp-amount" type="number" min="0.01" step="0.01" required placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>Fecha del pago *</label>
+          <input id="fp-date" type="date" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Tipo de pago</label>
+        <select id="fp-type">
+          <option value="minimum">Pago mínimo</option>
+          <option value="partial">Pago parcial</option>
+          <option value="full">Pago total</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>¿Actualizar el saldo de la tarjeta?</label>
+        <select id="fp-update">
+          <option value="yes">Sí — restar del saldo actual</option>
+          <option value="no">No — solo registrar el pago</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Notas (opcional)</label>
+        <textarea id="fp-notes" placeholder="Referencia, observación..." style="resize:vertical;min-height:52px"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" onclick="closeModal('modal-payment')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">✓ Registrar pago</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
