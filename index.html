@@ -63,37 +63,37 @@
 </section>
 
 <!-- FEATURES -->
-<section class="features" id="features">
+<section class="features" id="features" style="scroll-margin-top:64px">
   <div class="section-inner">
     <div class="section-label">Funciones</div>
     <h2 class="section-title">Todo lo que necesitas para<br>controlar tu crédito</h2>
     <div class="features-grid">
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon">📅</div>
         <h3>Alertas de fechas</h3>
         <p>Te avisa antes de tu fecha de corte y del vencimiento para que nunca pagues tarde ni generes intereses.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal" style="transition-delay:0.07s">
         <div class="feature-icon">💳</div>
         <h3>Múltiples tarjetas</h3>
         <p>Agrega todas tus tarjetas. Cada una con su propio ciclo de corte, límite, saldo y tasa de interés.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal" style="transition-delay:0.14s">
         <div class="feature-icon">📊</div>
         <h3>Dashboard financiero</h3>
         <p>Ve de un vistazo tu deuda total, pago mínimo del mes, interés estimado y cuánto has pagado.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal" style="transition-delay:0.21s">
         <div class="feature-icon">🎯</div>
         <h3>Estrategia de pago</h3>
         <p>El método avalancha te dice en qué orden pagar tus tarjetas para reducir el costo total de tu deuda.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal" style="transition-delay:0.28s">
         <div class="feature-icon">🕓</div>
         <h3>Historial de pagos</h3>
         <p>Registra cada pago con fecha y tipo. Lleva un control claro de lo que has pagado cada mes.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal" style="transition-delay:0.35s">
         <div class="feature-icon">💡</div>
         <h3>Consejos financieros</h3>
         <p>Tips prácticos basados en tus datos reales para mejorar tu score crediticio y ahorrar en intereses.</p>
@@ -108,7 +108,7 @@
     <div class="section-label">Cómo funciona</div>
     <h2 class="section-title">Listo en 3 minutos</h2>
     <div class="steps">
-      <div class="step">
+      <div class="step reveal">
         <div class="step-num">1</div>
         <div class="step-body">
           <h3>Crea tu cuenta gratis</h3>
@@ -116,7 +116,7 @@
         </div>
       </div>
       <div class="step-arrow">→</div>
-      <div class="step">
+      <div class="step reveal" style="transition-delay:0.15s">
         <div class="step-num">2</div>
         <div class="step-body">
           <h3>Agrega tus tarjetas</h3>
@@ -124,7 +124,7 @@
         </div>
       </div>
       <div class="step-arrow">→</div>
-      <div class="step">
+      <div class="step reveal" style="transition-delay:0.30s">
         <div class="step-num">3</div>
         <div class="step-body">
           <h3>Recibe alertas y paga a tiempo</h3>
@@ -139,16 +139,16 @@
 <section class="stats">
   <div class="section-inner">
     <div class="stats-grid">
-      <div class="stat">
-        <div class="stat-value">30%</div>
+      <div class="stat reveal" data-target="30" data-suffix="%">
+        <div class="stat-value" id="stat-0">30%</div>
         <div class="stat-label">de utilización ideal<br>para un buen score</div>
       </div>
-      <div class="stat">
-        <div class="stat-value">$0</div>
+      <div class="stat reveal" style="transition-delay:0.15s">
+        <div class="stat-value" id="stat-1">$0</div>
         <div class="stat-label">en intereses si pagas<br>el total cada mes</div>
       </div>
-      <div class="stat">
-        <div class="stat-value">100%</div>
+      <div class="stat reveal" style="transition-delay:0.30s" data-target="100" data-suffix="%">
+        <div class="stat-value" id="stat-2">100%</div>
         <div class="stat-label">gratis, siempre</div>
       </div>
     </div>
@@ -176,5 +176,71 @@
   </div>
 </footer>
 
+<script>
+// Scroll-reveal with IntersectionObserver
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal, .reveal-left').forEach(el => revealObserver.observe(el));
+
+// Nav shadow on scroll
+window.addEventListener('scroll', () => {
+  document.querySelector('.nav').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Counter animation for stat numbers
+function animateCounter(el, target, suffix, prefix = '') {
+  const duration = 1400;
+  const start = performance.now();
+  const update = (now) => {
+    const progress = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = prefix + Math.round(target * ease) + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+    else el.classList.add('counted');
+  };
+  requestAnimationFrame(update);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target.querySelector('.stat-value');
+    if (!el) return;
+    const target = parseFloat(e.target.dataset.target);
+    const suffix = e.target.dataset.suffix || '';
+    if (!isNaN(target)) animateCounter(el, target, suffix);
+    counterObserver.unobserve(e.target);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat[data-target]').forEach(el => counterObserver.observe(el));
+
+// Ripple effect on primary buttons
+document.querySelectorAll('.btn-hero-primary, .btn-cta').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    const rect = this.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height) * 2;
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple-effect';
+    ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+    this.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 500);
+  });
+});
+</script>
 </body>
 </html>

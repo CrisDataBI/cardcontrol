@@ -100,6 +100,7 @@ function showView(name, btn) {
 
 function renderView(name) {
   const el = document.getElementById('view-content');
+  el.style.opacity = '0';
   el.innerHTML = '';
   if (name === 'dashboard') renderDashboard(el);
   else if (name === 'cards') renderCards(el);
@@ -107,6 +108,11 @@ function renderView(name) {
   else if (name === 'history') renderHistory(el);
   else if (name === 'strategy') renderStrategy(el);
   else if (name === 'tips') renderTips(el);
+  requestAnimationFrame(() => {
+    el.style.transition = 'opacity 0.22s ease';
+    el.style.opacity = '1';
+    if (name === 'dashboard') animateDashboardNumbers();
+  });
 }
 
 // ─── ALERTS ───────────────────────────────────────────────────────────────────
@@ -181,12 +187,12 @@ function renderDashboard(el) {
     <div class="metrics-grid">
       <div class="metric-card dark">
         <div class="label">Deuda total</div>
-        <div class="value">${money(totalDebt)}</div>
+        <div class="value" data-amount="${totalDebt}">$0.00</div>
         <div class="sub">${cards.length} tarjeta${cards.length !== 1 ? 's' : ''} activa${cards.length !== 1 ? 's' : ''}</div>
       </div>
       <div class="metric-card green">
         <div class="label">Pagado este mes</div>
-        <div class="value">${money(paidThisMonth)}</div>
+        <div class="value" data-amount="${paidThisMonth}">$0.00</div>
         <div class="sub">${paidCount} pago${paidCount !== 1 ? 's' : ''} registrado${paidCount !== 1 ? 's' : ''}</div>
       </div>
       <div class="metric-card">
@@ -201,12 +207,12 @@ function renderDashboard(el) {
       </div>
       <div class="metric-card">
         <div class="label">Pago mínimo/mes</div>
-        <div class="value">${money(totalMin)}</div>
+        <div class="value" data-amount="${totalMin}">$0.00</div>
         <div class="sub">mínimo requerido</div>
       </div>
       <div class="metric-card">
         <div class="label">Interés estimado</div>
-        <div class="value" style="color:var(--danger)">${money(totalInterest)}</div>
+        <div class="value" style="color:var(--danger)" data-amount="${totalInterest}">$0.00</div>
         <div class="sub">si no pagas el total</div>
       </div>
     </div>
@@ -613,4 +619,44 @@ function checkNotifications() {
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 function emptyState(icon, title, text) {
   return `<div class="empty-state"><div class="icon">${icon}</div><h3>${title}</h3><p>${text}</p></div>`;
+}
+
+// ─── ANIMATIONS ───────────────────────────────────────────────────────────────
+function addRipple(btn, e) {
+  const rect = btn.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height) * 2;
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple-effect';
+  ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+  btn.classList.add('ripple');
+  btn.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 500);
+}
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.btn-primary');
+  if (btn) addRipple(btn, e);
+});
+
+function animateNumber(el, to, prefix = '$') {
+  const from = 0;
+  const duration = 700;
+  const start = performance.now();
+  const update = (now) => {
+    const progress = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const val = from + (to - from) * ease;
+    el.textContent = prefix + val.toLocaleString('es-SV', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (progress < 1) requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
+}
+
+function animateDashboardNumbers() {
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.metric-card .value[data-amount]').forEach(el => {
+      const amount = parseFloat(el.dataset.amount);
+      if (!isNaN(amount)) animateNumber(el, amount);
+    });
+  });
 }
