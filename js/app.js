@@ -1,7 +1,7 @@
 // ─── UTILS ───────────────────────────────────────────────────────────────────
 const MONTHS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const MONTHS_LONG = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-const COLORS = { blue:'#2563eb', teal:'#0d9488', purple:'#7c3aed', coral:'#ea580c', amber:'#d97706', pink:'#db2777' };
+const COLORS = { blue:'#3B82F6', teal:'#0D9488', purple:'#7C3AED', coral:'#F97316', amber:'#F59E0B', pink:'#EC4899', green:'#00D26A' };
 
 function today() { const d = new Date(); d.setHours(0,0,0,0); return d; }
 function fmtDate(d) { return new Date(d).toLocaleDateString('es-SV',{day:'2-digit',month:'short',year:'numeric'}); }
@@ -25,7 +25,7 @@ function utilPct(limit, bal) {
   return Math.min(100, Math.round((bal / limit) * 100));
 }
 
-function utilColor(p) { return p >= 80 ? '#dc2626' : p >= 50 ? '#d97706' : '#16a34a'; }
+function utilColor(p) { return p >= 80 ? '#EF4444' : p >= 50 ? '#F59E0B' : '#00D26A'; }
 function monthlyInterest(bal, annualRate) { return (bal || 0) * ((annualRate || 0) / 100 / 12); }
 
 function badgeClass(days) {
@@ -142,6 +142,18 @@ function renderAlerts() {
 }
 
 // ─── DASHBOARD ────────────────────────────────────────────────────────────────
+function circleGauge(pct, color, size = 80) {
+  const r = (size / 2) - 6;
+  const circ = 2 * Math.PI * r;
+  const fill = circ * (1 - Math.min(pct, 100) / 100);
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="#E8EAF0" stroke-width="7"/>
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="7"
+      stroke-dasharray="${circ}" stroke-dashoffset="${fill}" stroke-linecap="round"
+      style="transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 0.5s"/>
+  </svg>`;
+}
+
 function renderDashboard(el) {
   if (cards.length === 0) {
     el.innerHTML = emptyState('💳', 'Agrega tu primera tarjeta', 'Haz clic en "+ Nueva tarjeta" para comenzar.');
@@ -153,8 +165,10 @@ function renderDashboard(el) {
   const totalMin = cards.reduce((s, c) => s + (c.min_payment || 0), 0);
   const totalInterest = cards.reduce((s, c) => s + monthlyInterest(c.balance, c.interest_rate), 0);
   const avgUtil = totalLimit ? Math.round((totalDebt / totalLimit) * 100) : 0;
+  const utilClr = utilColor(avgUtil);
   const thisMonth = new Date().toISOString().slice(0, 7);
   const paidThisMonth = payments.filter(p => p.date && p.date.startsWith(thisMonth)).reduce((s, p) => s + (p.amount || 0), 0);
+  const paidCount = payments.filter(p => p.date && p.date.startsWith(thisMonth)).length;
 
   const events = [];
   cards.forEach(c => {
@@ -165,15 +179,25 @@ function renderDashboard(el) {
 
   el.innerHTML = `
     <div class="metrics-grid">
-      <div class="metric-card">
+      <div class="metric-card dark">
         <div class="label">Deuda total</div>
-        <div class="value" style="color:${totalDebt > 0 ? '#dc2626' : '#16a34a'}">${money(totalDebt)}</div>
-        <div class="sub">${cards.length} tarjeta(s)</div>
+        <div class="value">${money(totalDebt)}</div>
+        <div class="sub">${cards.length} tarjeta${cards.length !== 1 ? 's' : ''} activa${cards.length !== 1 ? 's' : ''}</div>
+      </div>
+      <div class="metric-card green">
+        <div class="label">Pagado este mes</div>
+        <div class="value">${money(paidThisMonth)}</div>
+        <div class="sub">${paidCount} pago${paidCount !== 1 ? 's' : ''} registrado${paidCount !== 1 ? 's' : ''}</div>
       </div>
       <div class="metric-card">
-        <div class="label">Límite total</div>
-        <div class="value">${money(totalLimit)}</div>
-        <div class="sub">Uso promedio: ${avgUtil}%</div>
+        <div class="label">Utilización</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:4px">
+          <div class="circle-wrap">${circleGauge(avgUtil, utilClr, 72)}<span class="circle-label" style="color:${utilClr}">${avgUtil}%</span></div>
+          <div>
+            <div class="value" style="font-size:16px;color:${utilClr}">${avgUtil <= 30 ? 'Excelente' : avgUtil <= 50 ? 'Aceptable' : avgUtil <= 80 ? 'Alta' : 'Crítica'}</div>
+            <div class="sub">Límite: ${money(totalLimit)}</div>
+          </div>
+        </div>
       </div>
       <div class="metric-card">
         <div class="label">Pago mínimo/mes</div>
@@ -182,13 +206,8 @@ function renderDashboard(el) {
       </div>
       <div class="metric-card">
         <div class="label">Interés estimado</div>
-        <div class="value" style="color:#dc2626">${money(totalInterest)}</div>
+        <div class="value" style="color:var(--danger)">${money(totalInterest)}</div>
         <div class="sub">si no pagas el total</div>
-      </div>
-      <div class="metric-card">
-        <div class="label">Pagado este mes</div>
-        <div class="value" style="color:#16a34a">${money(paidThisMonth)}</div>
-        <div class="sub">${payments.filter(p => p.date && p.date.startsWith(thisMonth)).length} pago(s) registrado(s)</div>
       </div>
     </div>
     <div class="section-title">Próximos eventos</div>
@@ -199,7 +218,7 @@ function renderDashboard(el) {
             <div class="tl-day">${e.date.getDate()}</div>
             <div class="tl-mon">${MONTHS[e.date.getMonth()]}</div>
           </div>
-          <div class="tl-dot" style="background:${e.type === 'cut' ? '#d97706' : '#16a34a'}"></div>
+          <div class="tl-dot" style="background:${e.type === 'cut' ? '#F59E0B' : '#00D26A'}"></div>
           <div class="tl-body">
             <div class="tl-title">${e.label}</div>
             <div class="tl-sub">${fmtDate(e.date)} · ${e.type === 'cut' ? 'Pago mínimo: ' + money(e.card.min_payment) : 'Saldo: ' + money(e.card.balance)}</div>
@@ -299,7 +318,7 @@ function renderTimeline(el) {
           <div class="tl-day">${e.date.getDate()}</div>
           <div class="tl-mon">${MONTHS[e.date.getMonth()]} ${e.date.getFullYear()}</div>
         </div>
-        <div class="tl-dot" style="background:${isCut ? '#d97706' : '#16a34a'}"></div>
+        <div class="tl-dot" style="background:${isCut ? '#F59E0B' : '#00D26A'}"></div>
         <div class="tl-body">
           <div class="tl-title" style="display:flex;align-items:center;gap:8px">
             ${e.card.name}
@@ -395,8 +414,8 @@ function renderStrategy(el) {
     html += `<div class="section-title mt-3">Sin deuda activa</div>`;
     noDebt.forEach(card => {
       html += `<div class="strategy-card">
-        <div class="strategy-rank" style="background:#f0fdf4;color:#16a34a">✓</div>
-        <div><div class="fw-bold">${card.name}</div><div class="text-sm text-success">Saldo $0 — al día</div></div>
+        <div class="strategy-rank" style="background:var(--green-light);color:var(--green-text)">✓</div>
+        <div><div class="fw-bold">${card.name}</div><div class="text-sm" style="color:var(--green-text)">Saldo $0 — al día</div></div>
       </div>`;
     });
   }

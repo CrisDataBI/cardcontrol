@@ -13,7 +13,10 @@
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
-    <div class="nav-logo">💳 <span>CardControl</span></div>
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">💳</div>
+      <span>CardControl</span>
+    </a>
     <div class="nav-links">
       <a href="#features">Funciones</a>
       <a href="#how">Cómo funciona</a>
@@ -26,14 +29,36 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-badge">✨ 100% gratuito · Sin tarjeta de crédito requerida</div>
-    <h1 class="hero-title">Nunca más olvides<br>una fecha de pago</h1>
-    <p class="hero-sub">CardControl te recuerda cuándo corta y cuándo pagar cada tarjeta, calcula tus intereses y te dice exactamente en qué orden pagar para ahorrar más dinero.</p>
+    <div class="hero-badge">✨ 100% gratuito &nbsp;·&nbsp; Sin tarjeta de crédito requerida</div>
+    <h1 class="hero-title">Nunca más olvides<br>una <span class="highlight">fecha de pago</span></h1>
+    <p class="hero-sub">CardControl te recuerda cuándo corta y cuándo pagar cada tarjeta, calcula intereses y te dice en qué orden pagar para ahorrar más dinero.</p>
     <div class="hero-actions">
       <a href="login.html?tab=register" class="btn-hero-primary">Comenzar gratis →</a>
       <a href="#how" class="btn-hero-ghost">Ver cómo funciona</a>
     </div>
-    <p class="hero-note">Ya lo usan personas como tú para mejorar su salud financiera 🇸🇻</p>
+    <p class="hero-note">Ya lo usan personas en El Salvador para mejorar su salud financiera 🇸🇻</p>
+  </div>
+
+  <!-- Mini dashboard preview -->
+  <div class="hero-preview">
+    <div class="preview-card">
+      <div class="preview-card-label">Deuda total</div>
+      <div class="preview-card-value danger">$1,240</div>
+      <div class="preview-card-sub">3 tarjetas</div>
+      <div class="preview-bar"><div class="preview-fill" style="width:62%;background:#EF4444"></div></div>
+    </div>
+    <div class="preview-card">
+      <div class="preview-card-label">Pago este mes</div>
+      <div class="preview-card-value green">$380</div>
+      <div class="preview-card-sub">Vence en 4 días</div>
+      <div class="preview-bar"><div class="preview-fill" style="width:45%"></div></div>
+    </div>
+    <div class="preview-card">
+      <div class="preview-card-label">Utilización</div>
+      <div class="preview-card-value" style="color:#F59E0B">28%</div>
+      <div class="preview-card-sub">Buen score 👍</div>
+      <div class="preview-bar"><div class="preview-fill" style="width:28%;background:#F59E0B"></div></div>
+    </div>
   </div>
 </section>
 
@@ -46,7 +71,7 @@
       <div class="feature-card">
         <div class="feature-icon">📅</div>
         <h3>Alertas de fechas</h3>
-        <p>Te avisa 3 días antes de tu fecha de corte y un día antes del vencimiento para que nunca pagues tarde.</p>
+        <p>Te avisa antes de tu fecha de corte y del vencimiento para que nunca pagues tarde ni generes intereses.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">💳</div>
@@ -95,7 +120,7 @@
         <div class="step-num">2</div>
         <div class="step-body">
           <h3>Agrega tus tarjetas</h3>
-          <p>Ingresa el día de corte, día de pago, límite y saldo de cada tarjeta. Tarda menos de un minuto por tarjeta.</p>
+          <p>Ingresa el día de corte, día de pago, límite y saldo de cada tarjeta en menos de un minuto.</p>
         </div>
       </div>
       <div class="step-arrow">→</div>
@@ -116,11 +141,11 @@
     <div class="stats-grid">
       <div class="stat">
         <div class="stat-value">30%</div>
-        <div class="stat-label">de utilización ideal para un buen score</div>
+        <div class="stat-label">de utilización ideal<br>para un buen score</div>
       </div>
       <div class="stat">
         <div class="stat-value">$0</div>
-        <div class="stat-label">en intereses si pagas el total cada mes</div>
+        <div class="stat-label">en intereses si pagas<br>el total cada mes</div>
       </div>
       <div class="stat">
         <div class="stat-value">100%</div>
@@ -133,23 +158,21 @@
 <!-- CTA -->
 <section class="cta">
   <div class="section-inner" style="text-align:center">
-    <h2 style="font-size:32px;font-weight:700;margin-bottom:16px;color:#fff">¿Listo para tomar control?</h2>
-    <p style="font-size:17px;color:rgba(255,255,255,0.8);margin-bottom:32px">Crea tu cuenta gratis en menos de un minuto.</p>
+    <h2>¿Listo para tomar control?</h2>
+    <p>Crea tu cuenta gratis en menos de un minuto.</p>
     <a href="login.html?tab=register" class="btn-cta">Comenzar gratis →</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer class="footer">
-  <div class="section-inner">
-    <div class="footer-inner">
-      <div class="footer-logo">💳 CardControl</div>
-      <div class="footer-links">
-        <a href="login.html">Iniciar sesión</a>
-        <a href="login.html?tab=register">Crear cuenta</a>
-      </div>
-      <div class="footer-copy">© 2026 CardControl. Hecho con ❤️ en El Salvador.</div>
+  <div class="footer-inner">
+    <div class="footer-logo">💳 CardControl</div>
+    <div class="footer-links">
+      <a href="login.html">Iniciar sesión</a>
+      <a href="login.html?tab=register">Crear cuenta</a>
     </div>
+    <div class="footer-copy">© 2026 CardControl · El Salvador 🇸🇻</div>
   </div>
 </footer>
 
