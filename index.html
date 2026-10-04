@@ -314,7 +314,7 @@ const revealObs = new IntersectionObserver((entries) => {
       revealObs.unobserve(e.target);
     }
   });
-}, { threshold: 0.1 });
+}, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal, .reveal-up, .reveal-left').forEach(el => revealObs.observe(el));
 
 // Counter animation for stat numbers
