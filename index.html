@@ -317,16 +317,17 @@ const revealObs = new IntersectionObserver((entries) => {
 }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal, .reveal-up, .reveal-left').forEach(el => revealObs.observe(el));
 
-// Counter animation for stat numbers
-function animateCounter(el, target, suffix) {
+// Counter animation for stat numbers (isolated name to avoid conflict with motion.js)
+function _statCounter(el, target, suffix) {
   const duration = 1400;
   const start = performance.now();
-  (function tick(now) {
+  function tick(now) {
     const p = Math.min((now - start) / duration, 1);
     const ease = 1 - Math.pow(1 - p, 3);
     el.textContent = Math.round(target * ease) + suffix;
     if (p < 1) requestAnimationFrame(tick);
-  })(start);
+  }
+  requestAnimationFrame(tick);
 }
 const counterObs = new IntersectionObserver((entries) => {
   entries.forEach(e => {
@@ -335,10 +336,10 @@ const counterObs = new IntersectionObserver((entries) => {
     if (!el) return;
     const target = parseFloat(e.target.dataset.target);
     const suffix = e.target.dataset.suffix || '';
-    if (!isNaN(target)) animateCounter(el, target, suffix);
+    if (!isNaN(target)) _statCounter(el, target, suffix);
     counterObs.unobserve(e.target);
   });
-}, { threshold: 0.5 });
+}, { threshold: 0.3 });
 document.querySelectorAll('.stat[data-target]').forEach(el => counterObs.observe(el));
 
 // Ripple on CTA buttons
