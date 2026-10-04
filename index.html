@@ -14,125 +14,236 @@
 <body class="landing-body">
 
 <!-- NAV -->
-<nav class="nav">
+<nav class="nav" id="nav">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">
-      <div class="nav-logo-icon">💳</div>
+      <span class="nav-logo-icon">💳</span>
       <span>CardControl</span>
     </a>
     <div class="nav-links">
       <a href="#features">Funciones</a>
       <a href="#how">Cómo funciona</a>
       <a href="login.html" class="btn-nav">Iniciar sesión</a>
-      <a href="login.html?tab=register" class="btn-nav btn-nav-primary">Crear cuenta gratis</a>
+      <a href="login.html?tab=register" class="btn-nav btn-nav-primary">Comenzar gratis</a>
     </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-inner">
-    <div class="hero-badge">✨ 100% gratuito &nbsp;·&nbsp; Sin tarjeta de crédito requerida</div>
-    <h1 class="hero-title">Nunca más olvides<br>una <span class="highlight">fecha de pago</span></h1>
-    <p class="hero-sub">CardControl te recuerda cuándo corta y cuándo pagar cada tarjeta, calcula intereses y te dice en qué orden pagar para ahorrar más dinero.</p>
-    <div class="hero-actions">
-      <a href="login.html?tab=register" class="btn-hero-primary">Comenzar gratis →</a>
-      <a href="#how" class="btn-hero-ghost">Ver cómo funciona</a>
-    </div>
-    <p class="hero-note">Ya lo usan personas en El Salvador para mejorar su salud financiera 🇸🇻</p>
+  <div class="hero-eyebrow">100% gratuito · Sin tarjeta de crédito</div>
+  <h1 class="hero-title">
+    Control total.<br>
+    <span class="accent">Sin sorpresas.</span>
+  </h1>
+  <p class="hero-sub">
+    Todas tus tarjetas, fechas de corte y pagos en un solo lugar.<br>
+    Nunca más pagues intereses por olvidar.
+  </p>
+  <div class="hero-actions">
+    <a href="login.html?tab=register" class="btn-hero-primary">Comenzar gratis →</a>
+    <a href="#how" class="btn-hero-ghost">Ver cómo funciona</a>
   </div>
+  <p class="hero-note">Hecho en El Salvador 🇸🇻</p>
 
-  <!-- Mini dashboard preview -->
-  <div class="hero-preview">
-    <div class="preview-card">
-      <div class="preview-card-label">Deuda total</div>
-      <div class="preview-card-value danger">$1,240</div>
-      <div class="preview-card-sub">3 tarjetas</div>
-      <div class="preview-bar"><div class="preview-fill" style="width:62%;background:#EF4444"></div></div>
-    </div>
-    <div class="preview-card">
-      <div class="preview-card-label">Pago este mes</div>
-      <div class="preview-card-value green">$380</div>
-      <div class="preview-card-sub">Vence en 4 días</div>
-      <div class="preview-bar"><div class="preview-fill" style="width:45%"></div></div>
-    </div>
-    <div class="preview-card">
-      <div class="preview-card-label">Utilización</div>
-      <div class="preview-card-value" style="color:#F59E0B">28%</div>
-      <div class="preview-card-sub">Buen score 👍</div>
-      <div class="preview-bar"><div class="preview-fill" style="width:28%;background:#F59E0B"></div></div>
+  <!-- Dashboard mockup -->
+  <div class="hero-mockup">
+    <div class="mockup-browser">
+      <div class="mockup-bar">
+        <span class="mockup-dot"></span>
+        <span class="mockup-dot"></span>
+        <span class="mockup-dot"></span>
+        <div class="mockup-url">cardcontrol-eta.vercel.app/app.html</div>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-sidebar">
+          <div class="msi-logo">💳 CardControl</div>
+          <div class="msi-label">Principal</div>
+          <div class="msi-item active">📊 Dashboard</div>
+          <div class="msi-item">💳 Mis tarjetas</div>
+          <div class="msi-item">📅 Calendario</div>
+          <div class="msi-label">Finanzas</div>
+          <div class="msi-item">🕓 Historial</div>
+          <div class="msi-item">🎯 Estrategia</div>
+          <div class="msi-item">💡 Consejos</div>
+        </div>
+        <div class="mockup-main">
+          <div class="mm-header">Dashboard</div>
+          <div class="mm-date">Domingo, 4 de octubre de 2026</div>
+          <div class="mm-metrics">
+            <div class="mm-metric">
+              <div class="mm-metric-label">Deuda total</div>
+              <div class="mm-metric-value red">$1,240</div>
+              <div class="mm-metric-bar"><div class="mm-metric-fill" style="width:62%;background:#ff453a"></div></div>
+            </div>
+            <div class="mm-metric">
+              <div class="mm-metric-label">Pago este mes</div>
+              <div class="mm-metric-value grn">$380</div>
+              <div class="mm-metric-bar"><div class="mm-metric-fill" style="width:45%;background:#30d158"></div></div>
+            </div>
+            <div class="mm-metric">
+              <div class="mm-metric-label">Utilización</div>
+              <div class="mm-metric-value amb">28%</div>
+              <div class="mm-metric-bar"><div class="mm-metric-fill" style="width:28%;background:#ffd60a"></div></div>
+            </div>
+          </div>
+          <div class="mm-cards-label">Mis tarjetas</div>
+          <div class="mm-cards">
+            <div class="mm-card-row">
+              <div class="mm-card-info">
+                <div class="mm-card-name">Visa Gold</div>
+                <div class="mm-card-bank">Banco Agrícola</div>
+              </div>
+              <div class="mm-card-right">
+                <div class="mm-card-amount">$640</div>
+                <span class="mm-card-badge ok">Al día</span>
+              </div>
+            </div>
+            <div class="mm-card-row">
+              <div class="mm-card-info">
+                <div class="mm-card-name">Mastercard</div>
+                <div class="mm-card-bank">Davivienda</div>
+              </div>
+              <div class="mm-card-right">
+                <div class="mm-card-amount">$380</div>
+                <span class="mm-card-badge due">4 días</span>
+              </div>
+            </div>
+            <div class="mm-card-row">
+              <div class="mm-card-info">
+                <div class="mm-card-name">Platinum</div>
+                <div class="mm-card-bank">Banco Cuscatlán</div>
+              </div>
+              <div class="mm-card-right">
+                <div class="mm-card-amount">$220</div>
+                <span class="mm-card-badge ok">Al día</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- FEATURES -->
-<section class="features" id="features" style="scroll-margin-top:64px">
+<section class="features" id="features" style="scroll-margin-top:52px">
   <div class="section-inner">
-    <div class="section-label">Funciones</div>
-    <h2 class="section-title">Todo lo que necesitas para<br>controlar tu crédito</h2>
+    <div class="section-eyebrow reveal">Funciones</div>
+    <h2 class="section-title-lg dark reveal">Todo lo que necesitas<br>para controlar tu crédito.</h2>
     <div class="features-grid">
       <div class="feature-card reveal">
-        <div class="feature-icon">📅</div>
+        <span class="feature-icon">📅</span>
         <h3>Alertas de fechas</h3>
-        <p>Te avisa antes de tu fecha de corte y del vencimiento para que nunca pagues tarde ni generes intereses.</p>
+        <p>Nunca olvides tu fecha de corte ni de vencimiento. CardControl te avisa antes de que sea tarde.</p>
       </div>
-      <div class="feature-card reveal" style="transition-delay:0.07s">
-        <div class="feature-icon">💳</div>
+      <div class="feature-card reveal" style="transition-delay:0.06s">
+        <span class="feature-icon">💳</span>
         <h3>Múltiples tarjetas</h3>
-        <p>Agrega todas tus tarjetas. Cada una con su propio ciclo de corte, límite, saldo y tasa de interés.</p>
+        <p>Agrega todas tus tarjetas con su ciclo de corte, límite, saldo y tasa de interés propios.</p>
       </div>
-      <div class="feature-card reveal" style="transition-delay:0.14s">
-        <div class="feature-icon">📊</div>
+      <div class="feature-card reveal" style="transition-delay:0.12s">
+        <span class="feature-icon">📊</span>
         <h3>Dashboard financiero</h3>
-        <p>Ve de un vistazo tu deuda total, pago mínimo del mes, interés estimado y cuánto has pagado.</p>
+        <p>Deuda total, pago mínimo del mes, interés estimado y cuánto has pagado — todo de un vistazo.</p>
       </div>
-      <div class="feature-card reveal" style="transition-delay:0.21s">
-        <div class="feature-icon">🎯</div>
-        <h3>Estrategia de pago</h3>
-        <p>El método avalancha te dice en qué orden pagar tus tarjetas para reducir el costo total de tu deuda.</p>
+      <div class="feature-card reveal" style="transition-delay:0.18s">
+        <span class="feature-icon">🎯</span>
+        <h3>Estrategia avalancha</h3>
+        <p>El orden exacto en que pagar tus tarjetas para reducir al mínimo el costo total de tu deuda.</p>
       </div>
-      <div class="feature-card reveal" style="transition-delay:0.28s">
-        <div class="feature-icon">🕓</div>
+      <div class="feature-card reveal" style="transition-delay:0.24s">
+        <span class="feature-icon">🕓</span>
         <h3>Historial de pagos</h3>
-        <p>Registra cada pago con fecha y tipo. Lleva un control claro de lo que has pagado cada mes.</p>
+        <p>Registra cada pago con fecha y tipo. Lleva un control claro de lo que pagas cada mes.</p>
       </div>
-      <div class="feature-card reveal" style="transition-delay:0.35s">
-        <div class="feature-icon">💡</div>
+      <div class="feature-card reveal" style="transition-delay:0.30s">
+        <span class="feature-icon">💡</span>
         <h3>Consejos financieros</h3>
-        <p>Tips prácticos basados en tus datos reales para mejorar tu score crediticio y ahorrar en intereses.</p>
+        <p>Tips prácticos basados en tus datos reales para mejorar tu score y ahorrar en intereses.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE -->
+<section class="showcase">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Tu dashboard</div>
+    <h2 class="section-title-lg light reveal">Todo en un solo lugar.</h2>
+    <p class="showcase-sub reveal">Diseñado para que veas lo que importa en segundos, no en minutos.</p>
+    <div class="hero-mockup reveal" style="margin-top:0;max-width:860px;margin-left:auto;margin-right:auto">
+      <div class="mockup-browser">
+        <div class="mockup-bar">
+          <span class="mockup-dot"></span>
+          <span class="mockup-dot"></span>
+          <span class="mockup-dot"></span>
+          <div class="mockup-url">cardcontrol-eta.vercel.app/app.html</div>
+        </div>
+        <div class="mockup-body" style="height:300px">
+          <div class="mockup-sidebar">
+            <div class="msi-logo">💳 CardControl</div>
+            <div class="msi-label">Principal</div>
+            <div class="msi-item">📊 Dashboard</div>
+            <div class="msi-item active">🎯 Estrategia</div>
+            <div class="msi-item">📅 Calendario</div>
+            <div class="msi-label">Finanzas</div>
+            <div class="msi-item">🕓 Historial</div>
+            <div class="msi-item">💡 Consejos</div>
+          </div>
+          <div class="mockup-main">
+            <div class="mm-header">Estrategia de pago</div>
+            <div class="mm-date">Método avalancha — ordena por tasa de interés</div>
+            <div class="mm-cards" style="margin-top:14px;gap:8px">
+              <div class="mm-card-row" style="border-left:3px solid #ff453a;padding-left:10px">
+                <div class="mm-card-info">
+                  <div class="mm-card-name">① Pagar primero — Mastercard</div>
+                  <div class="mm-card-bank">Tasa: 42% anual · Saldo: $380</div>
+                </div>
+                <span class="mm-card-badge due">Alta prioridad</span>
+              </div>
+              <div class="mm-card-row" style="border-left:3px solid #ffd60a;padding-left:10px">
+                <div class="mm-card-info">
+                  <div class="mm-card-name">② Visa Gold — Banco Agrícola</div>
+                  <div class="mm-card-bank">Tasa: 36% anual · Saldo: $640</div>
+                </div>
+                <span class="mm-card-badge" style="background:rgba(255,214,10,0.14);color:#ffd60a">Media</span>
+              </div>
+              <div class="mm-card-row" style="border-left:3px solid #30d158;padding-left:10px">
+                <div class="mm-card-info">
+                  <div class="mm-card-name">③ Platinum — Cuscatlán</div>
+                  <div class="mm-card-bank">Tasa: 28% anual · Saldo: $220</div>
+                </div>
+                <span class="mm-card-badge ok">Baja</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="how" id="how">
+<section class="how" id="how" style="scroll-margin-top:52px">
   <div class="section-inner">
-    <div class="section-label">Cómo funciona</div>
-    <h2 class="section-title">Listo en 3 minutos</h2>
+    <div class="section-eyebrow reveal">Cómo funciona</div>
+    <h2 class="section-title-lg dark reveal">Listo en 3 minutos.</h2>
     <div class="steps">
       <div class="step reveal">
         <div class="step-num">1</div>
-        <div class="step-body">
-          <h3>Crea tu cuenta gratis</h3>
-          <p>Solo necesitas tu correo y una contraseña. Sin tarjeta de crédito, sin cobros ocultos.</p>
-        </div>
+        <h3>Crea tu cuenta gratis</h3>
+        <p>Solo tu correo y una contraseña, o entra con Google. Sin tarjeta de crédito, sin cobros ocultos.</p>
       </div>
-      <div class="step-arrow">→</div>
-      <div class="step reveal" style="transition-delay:0.15s">
+      <div class="step reveal" style="transition-delay:0.12s">
         <div class="step-num">2</div>
-        <div class="step-body">
-          <h3>Agrega tus tarjetas</h3>
-          <p>Ingresa el día de corte, día de pago, límite y saldo de cada tarjeta en menos de un minuto.</p>
-        </div>
+        <h3>Agrega tus tarjetas</h3>
+        <p>Día de corte, día de pago, límite y saldo de cada tarjeta. Menos de un minuto por tarjeta.</p>
       </div>
-      <div class="step-arrow">→</div>
-      <div class="step reveal" style="transition-delay:0.30s">
+      <div class="step reveal" style="transition-delay:0.24s">
         <div class="step-num">3</div>
-        <div class="step-body">
-          <h3>Recibe alertas y paga a tiempo</h3>
-          <p>CardControl te recuerda cuándo actuar. Tú solo sigues el plan y construyes tu historial crediticio.</p>
-        </div>
+        <h3>Paga a tiempo, siempre</h3>
+        <p>CardControl te dice cuándo actuar. Tú sigues el plan y construyes tu historial crediticio.</p>
       </div>
     </div>
   </div>
@@ -143,16 +254,16 @@
   <div class="section-inner">
     <div class="stats-grid">
       <div class="stat reveal" data-target="30" data-suffix="%">
-        <div class="stat-value" id="stat-0">30%</div>
-        <div class="stat-label">de utilización ideal<br>para un buen score</div>
+        <span class="stat-value" id="stat-0">30%</span>
+        <div class="stat-label">de utilización ideal<br>para un buen score crediticio</div>
       </div>
-      <div class="stat reveal" style="transition-delay:0.15s">
-        <div class="stat-value" id="stat-1">$0</div>
+      <div class="stat reveal" style="transition-delay:0.12s">
+        <span class="stat-value" id="stat-1">$0</span>
         <div class="stat-label">en intereses si pagas<br>el total cada mes</div>
       </div>
-      <div class="stat reveal" style="transition-delay:0.30s" data-target="100" data-suffix="%">
-        <div class="stat-value" id="stat-2">100%</div>
-        <div class="stat-label">gratis, siempre</div>
+      <div class="stat reveal" style="transition-delay:0.24s" data-target="100" data-suffix="%">
+        <span class="stat-value" id="stat-2">100%</span>
+        <div class="stat-label">gratis, para siempre</div>
       </div>
     </div>
   </div>
@@ -160,10 +271,10 @@
 
 <!-- CTA -->
 <section class="cta">
-  <div class="section-inner" style="text-align:center">
-    <h2>¿Listo para tomar control?</h2>
-    <p>Crea tu cuenta gratis en menos de un minuto.</p>
-    <a href="login.html?tab=register" class="btn-cta">Comenzar gratis →</a>
+  <div class="section-inner" style="position:relative">
+    <h2 class="reveal">¿Listo para tomar control?</h2>
+    <p class="reveal">Crea tu cuenta gratis en menos de un minuto.</p>
+    <a href="login.html?tab=register" class="btn-cta reveal">Comenzar gratis →</a>
   </div>
 </section>
 
@@ -180,46 +291,44 @@
 </footer>
 
 <script>
-// Scroll-reveal with IntersectionObserver
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      revealObserver.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal, .reveal-left').forEach(el => revealObserver.observe(el));
-
-// Nav shadow on scroll
+// Nav: frosted glass on scroll
 window.addEventListener('scroll', () => {
-  document.querySelector('.nav').classList.toggle('scrolled', window.scrollY > 10);
-});
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 8);
+}, { passive: true });
 
 // Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
-    e.preventDefault();
     const target = document.querySelector(a.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth' });
   });
 });
 
+// Scroll reveal
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal, .reveal-up, .reveal-left').forEach(el => revealObs.observe(el));
+
 // Counter animation for stat numbers
-function animateCounter(el, target, suffix, prefix = '') {
+function animateCounter(el, target, suffix) {
   const duration = 1400;
   const start = performance.now();
-  const update = (now) => {
-    const progress = Math.min((now - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - progress, 3);
-    el.textContent = prefix + Math.round(target * ease) + suffix;
-    if (progress < 1) requestAnimationFrame(update);
-    else el.classList.add('counted');
-  };
-  requestAnimationFrame(update);
+  (function tick(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * ease) + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+  })(start);
 }
-
-const counterObserver = new IntersectionObserver((entries) => {
+const counterObs = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (!e.isIntersecting) return;
     const el = e.target.querySelector('.stat-value');
@@ -227,21 +336,21 @@ const counterObserver = new IntersectionObserver((entries) => {
     const target = parseFloat(e.target.dataset.target);
     const suffix = e.target.dataset.suffix || '';
     if (!isNaN(target)) animateCounter(el, target, suffix);
-    counterObserver.unobserve(e.target);
+    counterObs.unobserve(e.target);
   });
 }, { threshold: 0.5 });
-document.querySelectorAll('.stat[data-target]').forEach(el => counterObserver.observe(el));
+document.querySelectorAll('.stat[data-target]').forEach(el => counterObs.observe(el));
 
-// Ripple effect on primary buttons
+// Ripple on CTA buttons
 document.querySelectorAll('.btn-hero-primary, .btn-cta').forEach(btn => {
   btn.addEventListener('click', function(e) {
-    const rect = this.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height) * 2;
-    const ripple = document.createElement('span');
-    ripple.className = 'ripple-effect';
-    ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
-    this.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 500);
+    const r = this.getBoundingClientRect();
+    const size = Math.max(r.width, r.height) * 2;
+    const s = document.createElement('span');
+    s.className = 'ripple-effect';
+    s.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-r.left-size/2}px;top:${e.clientY-r.top-size/2}px`;
+    this.appendChild(s);
+    s.addEventListener('animationend', () => s.remove(), { once: true });
   });
 });
 </script>
