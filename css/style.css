@@ -50,8 +50,30 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ── VIEW TRANSITIONS (Chrome 111+) ────────────────── */
+::view-transition-old(root) {
+  animation: 180ms ease-out both vt-out;
+}
+::view-transition-new(root) {
+  animation: 300ms cubic-bezier(0.22,1,0.36,1) both vt-in;
+}
+@keyframes vt-out { to { opacity: 0; transform: scale(0.98) translateY(-4px); } }
+@keyframes vt-in  { from { opacity: 0; transform: scale(0.99) translateY(10px); } }
+
+/* ── CARD SHINE OVERLAY (for 3D tilt) ──────────────── */
+.card-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+}
+.card { position: relative; }
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text);
   font-size: 15px;
@@ -493,3 +515,25 @@ body {
   .form-row { grid-template-columns: 1fr; }
   .metrics-grid { grid-template-columns: 1fr 1fr; }
 }
+
+
+/* Google OAuth button */
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  margin-top: 8px;
+}
+.btn-google:hover { background: #f9fafb; border-color: #d1d5db; }
+.btn-google:disabled { opacity: 0.6; cursor: not-allowed; }
